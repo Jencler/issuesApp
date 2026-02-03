@@ -1,6 +1,11 @@
+import { IssuesAPIResponse } from '../../interfaces/issues/issues.interface';
 import { IssueItem } from './IssueItem';
+interface Prosp {
+  issues: IssuesAPIResponse[]
+}
 
-export const IssueList = () => {
+export const IssueList = ({ issues }: Prosp) => {
+
   return (
     <>
       {/* Botones de All, Open, Closed */}
@@ -12,8 +17,8 @@ export const IssueList = () => {
 
       {/* Lista de issues */}
       <div className="mt-4">
-        {[1, 2, 3].map((issue) => (
-          <IssueItem key={issue} />
+        {issues.map((issue) => (
+          <IssueItem key={issue.id} issue={issue} />
         ))}
       </div>
     </>
