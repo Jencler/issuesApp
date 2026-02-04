@@ -1,10 +1,23 @@
 import { githubApi } from "../../api/github.api"
 import { sleep } from "../../helpers/sleep"
-import { IssuesAPIResponse } from "../../interfaces/issues/issues.interface"
+import { IssuesAPIResponse, State } from '../../interfaces/issues/issues.interface';
 
-export const getIssues = async (): Promise<IssuesAPIResponse[]> => {
+export const getIssues = async (state: State, selectedLabels: string[]): Promise<IssuesAPIResponse[]> => {
     await sleep(1000)
-    const { data } = await githubApi.get<IssuesAPIResponse[]>('/issues')
+
+    const params = new URLSearchParams()
+
+    if (state !== State.All) {
+        params.append('state', state)
+    }
+
+    if (selectedLabels.length > 0) {
+        params.append('labels', selectedLabels.join(','))
+    }
+
+    const { data } = await githubApi.get<IssuesAPIResponse[]>('/issues', {
+        params: params
+    })
     return data
 
 }

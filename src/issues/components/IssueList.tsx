@@ -1,18 +1,20 @@
-import { IssuesAPIResponse } from '../../interfaces/issues/issues.interface';
+import { IssuesAPIResponse, State } from '../../interfaces/issues/issues.interface';
 import { IssueItem } from './IssueItem';
 interface Prosp {
   issues: IssuesAPIResponse[]
+  onStateChange: (state: State) => void
+  state: State
 }
 
-export const IssueList = ({ issues }: Prosp) => {
+export const IssueList = ({ issues, onStateChange, state }: Prosp) => {
 
   return (
     <>
       {/* Botones de All, Open, Closed */}
       <div className="flex gap-4">
-        <button className="btn active">All</button>
-        <button className="btn">Open</button>
-        <button className="btn">Closed</button>
+        <button onClick={() => onStateChange(State.All)} className={`btn ${state === State.All ? "active" : ""}`}>All</button>
+        <button onClick={() => onStateChange(State.Open)} className={`btn ${state === State.Open ? "active" : ""}`}>Open</button>
+        <button onClick={() => onStateChange(State.Close)} className={`btn ${state === State.Close ? "active" : ""}`}>Closed</button>
       </div>
 
       {/* Lista de issues */}
